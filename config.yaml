@@ -1,0 +1,30 @@
+dataset:
+  voc_root: VOCdevkit
+  train_txt: VOC2007/ImageSets/Segmentation/train.txt
+  val_txt: VOC2007/ImageSets/Segmentation/val.txt
+  image_dir: VOC2007/JPEGImages
+  mask_dir: VOC2007/SegmentationClass
+
+  # 原仓库 input_shape 是 [H, W]
+  input_shape: [512, 512]
+
+  # 如果你的 mask 像素是 0/255，且 255 表示前景，就设 true
+  # 如果你的 mask 已经是 0/1，就设 false
+  mask_255_to_1: true
+
+model:
+  phi: b0
+  num_classes: 2
+  pretrained: false
+  model_path: model_data/segformer_b0_weights_voc.pth
+
+train:
+  seed: 11
+  cuda: true
+  epochs: 1
+  batch_size: 2
+  lr: 0.0001
+  weight_decay: 0.01
+  num_workers: 0
+  save_dir: logs
+  save_period: 5
