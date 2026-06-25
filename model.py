@@ -314,27 +314,3 @@ class SegFormer(nn.Module):
         x = F.interpolate(x, size = (H, W), mode = 'bilinear', align_corners = True)
 
         return x
-
-
-
-if __name__ == "__main__":
-    import torch
-    import traceback
-    import pdb
-
-    model = SegFormer()
-    model.eval()
-
-    x = torch.randn(1, 3, 224, 224)
-
-    try:
-        with torch.no_grad():
-            outs = model(x)
-
-        print("forward 跑通")
-        
-
-    except Exception:
-        print("forward 没跑通，进入 pdb 调试")
-        traceback.print_exc()
-        pdb.post_mortem()
