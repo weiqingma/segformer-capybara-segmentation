@@ -19,14 +19,18 @@ This project is simplified from the open-source `bubbliiiing/segformer-pytorch` 
 ```text
 .
 ├── config.yaml
-├── dataloader.py
 ├── evaluate.py
-├── loss.py
-├── lr_scheduler.py
-├── model.py
 ├── predict.py
+├── requirements.txt
+├── src/
+│   ├── __init__.py
+│   ├── dataloader.py
+│   ├── loss.py
+│   ├── lr_scheduler.py
+│   ├── model.py
+│   └── trainer.py
 ├── train.py
-└── trainer.py
+└── README.md
 ```
 
 Dataset files, checkpoints, and prediction outputs are intentionally ignored by Git.
@@ -125,4 +129,3 @@ Model checkpoints are not committed to this repository. Put local weights under 
   year={2021}
 }
 ```
-
