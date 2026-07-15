@@ -10,10 +10,10 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
-from model import SegFormer, load_pretrained_weights
-from dataloader import SegmentationDataset, seg_dataset_collate
-from trainer import fit_one_epoch
-from lr_scheduler import get_lr_scheduler, set_optimizer_lr
+from src.model import SegFormer, load_pretrained_weights
+from src.dataloader import SegmentationDataset, seg_dataset_collate
+from src.trainer import fit_one_epoch
+from src.lr_scheduler import get_lr_scheduler, set_optimizer_lr
 
 
 def seed_everything(seed):

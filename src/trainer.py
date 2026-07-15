@@ -1,7 +1,7 @@
 import torch
 from tqdm import tqdm
 
-from loss import CE_Loss, Dice_loss
+from src.loss import CE_Loss, Dice_loss
 
 
 def compute_loss(outputs, masks, seg_labels, cls_weights, num_classes, use_dice = True):

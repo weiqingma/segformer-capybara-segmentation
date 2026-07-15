@@ -7,7 +7,7 @@ import yaml
 from PIL import Image
 from tqdm import tqdm
 
-from model import load_inference_model
+from src.model import load_inference_model
 from predict import predict
 
 '''

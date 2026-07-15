@@ -10,8 +10,8 @@ import torch.nn.functional as F
 import yaml
 from PIL import Image
 
-from model import load_inference_model
-from dataloader import preprocess_input
+from src.model import load_inference_model
+from src.dataloader import preprocess_input
 
 
 def cvtColor(image):
