@@ -1,7 +1,7 @@
-torch
-torchvision
-numpy
-pillow
-opencv-python
-pyyaml
-tqdm
+torch==2.5.1
+torchvision==0.20.1
+numpy==1.23.5
+Pillow==9.5.0
+opencv-python==4.8.1.78
+PyYAML==6.0.3
+tqdm==4.66.5
