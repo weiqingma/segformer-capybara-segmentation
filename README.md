@@ -14,6 +14,10 @@ This project is simplified from the open-source `bubbliiiing/segformer-pytorch` 
 - Single-image prediction with mask and overlay outputs
 - Optional distributed training with PyTorch DDP
 
+## Model Architecture
+
+![SegFormer architecture](assets/images/segformer_architecture.png)
+
 ## Project Structure
 
 ```text
