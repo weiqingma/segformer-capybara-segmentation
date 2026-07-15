@@ -119,12 +119,12 @@ Model checkpoints are not committed to this repository. Put local weights under 
 
 ## Qualitative Results
 
-| Scene | Input Image | Ground Truth | Prediction | Overlay |
+| Scene | Input Image | Ground Truth Overlay | Prediction | Prediction Overlay |
 |---|---|---|---|---|
-| Natural scene | ![](assets/results/nature_input.jpg) | ![](assets/results/nature_gt.png) | ![](assets/results/nature_pred.png) | ![](assets/results/nature_overlay.jpg) |
-| Doll | ![](assets/results/doll_input.jpg) | ![](assets/results/doll_gt.png) | ![](assets/results/doll_pred.png) | ![](assets/results/doll_overlay.jpg) |
-| Cartoon | ![](assets/results/cartoon_input.jpg) | ![](assets/results/cartoon_gt.png) | ![](assets/results/cartoon_pred.png) | ![](assets/results/cartoon_overlay.jpg) |
-| Night scene | ![](assets/results/night_input.jpg) | ![](assets/results/night_gt.png) | ![](assets/results/night_pred.png) | ![](assets/results/night_overlay.jpg) |
+| Natural scene | ![](assets/results/nature_input.jpg) | ![](assets/results/nature_ground_truth_overlay.jpg) | ![](assets/results/nature_prediction.png) | ![](assets/results/nature_overlay.jpg) |
+| Doll | ![](assets/results/doll_input.jpg) | ![](assets/results/doll_ground_truth_overlay.jpg) | ![](assets/results/doll_prediction.png) | ![](assets/results/doll_overlay.jpg) |
+| Cartoon | ![](assets/results/cartoon_input.jpg) | ![](assets/results/cartoon_ground_truth_overlay.jpg) | ![](assets/results/cartoon_prediction.png) | ![](assets/results/cartoon_overlay.jpg) |
+| Night scene | ![](assets/results/night_input.jpg) | ![](assets/results/night_ground_truth_overlay.jpg) | ![](assets/results/night_prediction.png) | ![](assets/results/night_overlay.jpg) |
 
 ## Citation
 
