@@ -108,3 +108,15 @@ The raw mask and overlay image are written to `outputs/predict/` by default.
 ## Checkpoints
 
 Model checkpoints are not committed to this repository. Put local weights under `outputs/checkpoints/` or update `config.yaml` to point to your checkpoint path.
+
+## Citation
+
+```bibtex
+@inproceedings{xie2021segformer,
+  title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
+  author={Xie, Enze and Wang, Wenhai and Yu, Zhiding and Anandkumar, Anima and Alvarez, Jose M and Luo, Ping},
+  booktitle={Neural Information Processing Systems (NeurIPS)},
+  year={2021}
+}
+```
+
