@@ -109,6 +109,12 @@ The raw mask and overlay image are written to `outputs/predict/` by default.
 
 Model checkpoints are not committed to this repository. Put local weights under `outputs/checkpoints/` or update `config.yaml` to point to your checkpoint path.
 
+## Qualitative Results
+
+| Input Image | Ground Truth | Prediction | Overlay |
+|---|---|---|---|
+| ![](assets/demo_input.jpg) | ![](assets/demo_gt.png) | ![](assets/demo_pred.png) | ![](assets/demo_overlay.png) |
+
 ## Citation
 
 ```bibtex
