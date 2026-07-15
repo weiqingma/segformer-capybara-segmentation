@@ -119,9 +119,12 @@ Model checkpoints are not committed to this repository. Put local weights under 
 
 ## Qualitative Results
 
-| Input Image | Ground Truth | Prediction | Overlay |
-|---|---|---|---|
-| ![](assets/demo_input.jpg) | ![](assets/demo_gt.png) | ![](assets/demo_pred.png) | ![](assets/demo_overlay.png) |
+| Scene | Input Image | Ground Truth | Prediction | Overlay |
+|---|---|---|---|---|
+| Natural scene | ![](assets/results/nature_input.jpg) | ![](assets/results/nature_gt.png) | ![](assets/results/nature_pred.png) | ![](assets/results/nature_overlay.jpg) |
+| Doll | ![](assets/results/doll_input.jpg) | ![](assets/results/doll_gt.png) | ![](assets/results/doll_pred.png) | ![](assets/results/doll_overlay.jpg) |
+| Cartoon | ![](assets/results/cartoon_input.jpg) | ![](assets/results/cartoon_gt.png) | ![](assets/results/cartoon_pred.png) | ![](assets/results/cartoon_overlay.jpg) |
+| Night scene | ![](assets/results/night_input.jpg) | ![](assets/results/night_gt.png) | ![](assets/results/night_pred.png) | ![](assets/results/night_overlay.jpg) |
 
 ## Citation
 
