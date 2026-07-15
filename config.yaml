@@ -15,16 +15,32 @@ dataset:
 model:
   phi: b0
   num_classes: 2
+  class_names: [background, capybara]
   pretrained: false
-  model_path: model_data/segformer_b0_weights_voc.pth
+  model_path: ""
 
 train:
   seed: 11
   cuda: true
+  distributed: false
+  sync_bn: false
   epochs: 1
   batch_size: 2
   lr: 0.0001
+  min_lr_ratio: 0.01
+  lr_decay_type: cos
   weight_decay: 0.01
   num_workers: 0
-  save_dir: logs
+  save_dir: outputs/checkpoints
   save_period: 5
+
+predict:
+  model_path: outputs/checkpoints/best_epoch_weights.pth
+  output_dir: outputs/predict
+
+eval:
+  # 0: generate predictions and compute metrics; 1: generate only; 2: compute only
+  miou_mode: 0
+  model_path: outputs/checkpoints/best_epoch_weights.pth
+  output_dir: outputs/eval
+  pred_dir: detection-results

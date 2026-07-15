@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.nn as nn
 import math
@@ -7,6 +9,11 @@ import torch.nn.functional as F
 #总体目标：
 #输入x：[B, 3, H, W]
 #输出out：[B, num_classes, H, W]
+
+
+class GELU(nn.Module):
+    def forward(self, x):
+        return 0.5 * x * (1 + torch.tanh(math.sqrt(2 / math.pi) * (x + 0.044715 * torch.pow(x, 3))))
 
 class OverlapPatchEmbed(nn.Module):
     #输入x：[B, 3, H, W]
@@ -56,6 +63,7 @@ class Attention(nn.Module):
             x_ = x.permute(0, 2, 1).reshape(B, C, H, W)
             #降采样down sampling
             x_ = self.sr(x_).reshape(B, C, -1).permute(0, 2, 1)
+            x_ = self.norm(x_)
             kv = self.kv(x_).reshape(B, -1, 2, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         else:
             kv = self.kv(x).reshape(B, -1, 2, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
@@ -86,14 +94,14 @@ class DWConv(nn.Module):
         return x
 
 class Mlp_backbone(nn.Module):
-    def __init__(self, in_features, hidden_features = None, out_features = None, act_layer=nn.GELU(), drop = 0.):
+    def __init__(self, in_features, hidden_features = None, out_features = None, act_layer=GELU, drop = 0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
 
         self.fc1 = nn.Linear(in_features, hidden_features)
         self.dwconv = DWConv(hidden_features)
-        self.act = act_layer
+        self.act = act_layer()
         
         self.fc2 = nn.Linear(hidden_features, out_features)
 
@@ -109,7 +117,7 @@ class Mlp_backbone(nn.Module):
         return x
 
 class Block(nn.Module):
-    def __init__(self, dim, num_heads, mlp_ratio=4, qkv_bias = False, qk_scale = None, drop = 0. , attn_drop = 0., act_layer = nn.GELU(), norm_layer = nn.LayerNorm, sr_ratio = 1):
+    def __init__(self, dim, num_heads, mlp_ratio=4, qkv_bias = False, qk_scale = None, drop = 0. , attn_drop = 0., act_layer = GELU, norm_layer = nn.LayerNorm, sr_ratio = 1):
         super().__init__()
         self.norm1 = norm_layer(dim)
         self.attn = Attention(dim, num_heads, qkv_bias, qk_scale, attn_drop = attn_drop, sr_ratio = sr_ratio)
@@ -253,7 +261,7 @@ class Mlp(nn.Module):
         return x
 
 class ConvModule(nn.Module):
-    def __init__(self, c1, c2, k = 1, s = 1, p = 1, g = 1, act = True):
+    def __init__(self, c1, c2, k = 1, s = 1, p = 0, g = 1, act = True):
         super(ConvModule, self).__init__()
         self.conv = nn.Conv2d(c1, c2, k, s, p, groups = g, bias = False)
         self.bn = nn.BatchNorm2d(c2,eps = 0.001, momentum = 0.03)
@@ -314,3 +322,66 @@ class SegFormer(nn.Module):
         x = F.interpolate(x, size = (H, W), mode = 'bilinear', align_corners = True)
 
         return x
+
+
+#只加载名字相同且shape相同的参数
+def load_pretrained_weights(model, model_path, device):
+    if not model_path:
+        return model
+    if not os.path.exists(model_path):
+        print(f"Warning: model_path '{model_path}' does not exist, training from scratch.")
+        return model
+    print(f"Loading model weights from {model_path}")
+
+    model_dict = model.state_dict()
+    pretrained_dict = torch.load(model_path, map_location=device)
+
+    load_key, no_load_key, temp_dict = [], [], {}
+    for k, v in pretrained_dict.items():
+        if k in model_dict and model_dict[k].shape == v.shape:
+            temp_dict[k] = v
+            load_key.append(k)
+        else:
+            no_load_key.append(k)
+
+    model_dict.update(temp_dict)
+    model.load_state_dict(model_dict)
+
+    print(f"Successful load keys: {len(load_key)}")
+    print(f"Failed load keys: {len(no_load_key)}")
+    print("分类头没有载入是正常的；backbone 大量没载入才是不正常的。")
+
+    return model
+
+
+def load_inference_model(num_classes, model_path, device):
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model not found: {model_path}")
+
+    model = SegFormer(num_classes=num_classes, pretrained=False)
+    state_dict = torch.load(model_path, map_location=device)
+    model.load_state_dict(state_dict, strict=True)
+    model.eval()
+    return model.to(device)
+
+
+if __name__ == "__main__":
+    import torch
+    import traceback
+    import pdb
+
+    model = SegFormer()
+    model.eval()
+
+    x = torch.randn(1, 3, 224, 224)
+
+    try:
+        with torch.no_grad():
+            outs = model(x)
+
+        print("forward 跑通")
+
+    except Exception:
+        print("forward 没跑通，进入 pdb 调试")
+        traceback.print_exc()
+        pdb.post_mortem()

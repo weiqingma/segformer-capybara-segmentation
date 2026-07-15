@@ -17,12 +17,15 @@ def preprocess_input(image):
 
 
 class SegmentationDataset(Dataset):
-    def __init__(self, annotation_lines, input_shape, num_classes, dataset_path, train=True):
+    def __init__(self, annotation_lines, input_shape, num_classes, dataset_path, image_dir, mask_dir, mask_255_to_1=False, train=True):
         """
         annotation_lines: train.txt / val.txt 读出来的每一行，比如 ["xxx", "yyy"]
         input_shape: [H, W]，比如 [512, 512]
         num_classes: 类别数，包含背景
         dataset_path: VOCdevkit 路径
+        image_dir: 图片目录，相对于 dataset_path
+        mask_dir: 标签目录，相对于 dataset_path
+        mask_255_to_1: 是否把 255 前景像素转换成类别 1
         train: 保留这个参数只是为了兼容 train.py，当前最小版不做增强
         """
         super().__init__()
@@ -32,9 +35,10 @@ class SegmentationDataset(Dataset):
         self.num_classes = num_classes
         self.dataset_path = dataset_path
         self.train = train
+        self.mask_255_to_1 = mask_255_to_1
 
-        self.image_dir = os.path.join(dataset_path, "VOC2007", "JPEGImages")
-        self.mask_dir = os.path.join(dataset_path, "VOC2007", "SegmentationClass")
+        self.image_dir = os.path.join(dataset_path, image_dir)
+        self.mask_dir = os.path.join(dataset_path, mask_dir)
 
     def __len__(self):
         '''
@@ -74,6 +78,8 @@ class SegmentationDataset(Dataset):
         '''
 
         mask = np.array(mask, dtype=np.int64)
+        if self.mask_255_to_1:
+            mask[mask == 255] = 1
         # 大于等于 num_classes 的像素作为 ignore 类。
         # 原项目 CE_Loss 里 ignore_index=num_classes，所以这里这样处理是对齐的。
         mask[mask >= self.num_classes] = self.num_classes
